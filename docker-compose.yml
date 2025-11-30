@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ordersdb
+    ports:
+      - "5432:5432"
+    networks:
+      - order-net
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  ordermanagement-api:
+    container_name: ordermanagement-api
+    build:
+      context: .
+      dockerfile: OrderManagement.Api/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=ordersdb;Username=postgres;Password=postgres"
+      ServiceBus__ConnectionString: "todo"
+      ServiceBus__QueueName: "orders"
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: unless-stopped
+    networks:
+      - order-net
+
+networks:
+  order-net:
+volumes:
+  pgdata:
