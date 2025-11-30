@@ -36,6 +36,20 @@ services:
     networks:
       - order-net
 
+  orders-frontend:
+    container_name: orders-frontend
+    build:
+      context: ./orders-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - order-net
+    depends_on:
+      - ordermanagement-api
+    environment:
+      REACT_APP_API_URL: "http://ordermanagement-api:8080"
+
 networks:
   order-net:
 volumes:
