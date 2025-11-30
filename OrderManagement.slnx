@@ -1,8 +1,12 @@
 <Solution>
+  <Folder Name="/Itens de Solução/">
+    <File Path="docker-compose.yml" />
+  </Folder>
   <Project Path="OrderManagement.Api/OrderManagement.Api.csproj">
     <BuildDependency Project="OrderManagement.Domain/OrderManagement.Domain.csproj" />
     <BuildDependency Project="OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" />
   </Project>
   <Project Path="OrderManagement.Domain/OrderManagement.Domain.csproj" />
   <Project Path="OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" />
+  <Project Path="OrderManagement.Worker/OrderManagement.Worker.csproj" />
 </Solution>
