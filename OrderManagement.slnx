@@ -1,4 +1,8 @@
 <Solution>
-  <Project Path="OrderManagement.Api/OrderManagement.Api.csproj" />
+  <Project Path="OrderManagement.Api/OrderManagement.Api.csproj">
+    <BuildDependency Project="OrderManagement.Domain/OrderManagement.Domain.csproj" />
+    <BuildDependency Project="OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" />
+  </Project>
   <Project Path="OrderManagement.Domain/OrderManagement.Domain.csproj" />
+  <Project Path="OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" />
 </Solution>
