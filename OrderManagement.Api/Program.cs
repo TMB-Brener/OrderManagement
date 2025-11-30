@@ -1,7 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using OrderManagement.Infrastructure;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<OrderDbContext>(opt =>
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -25,5 +37,8 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
