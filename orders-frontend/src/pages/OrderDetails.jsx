@@ -20,9 +20,9 @@ export default function OrderDetails() {
             <div className="space-y-2">
                 <p><strong>Cliente:</strong> {order.customer}</p>
                 <p><strong>Produto:</strong> {order.product}</p>
-                <p><strong>Valor:</strong> R$ {order.quantity}</p>
+                <p><strong>Valor:</strong> R$ {order.price}</p>
                 <p><strong>Status:</strong> {order.status}</p>
-                <p><strong>Data:</strong> {order.dataCriacao}</p>
+                <p><strong>Data:</strong> {order.DateCreated}</p>
             </div>
         </div>
     );

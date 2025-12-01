@@ -5,8 +5,8 @@
         public Guid Id { get; set; }
         public string Customer { get; set; } = string.Empty;
         public string Product { get; set; } = string.Empty;
-        public int Quantity { get; set; }
+        public int Price { get; set; }
         public string Status { get; set; } = "Pendente";
-        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

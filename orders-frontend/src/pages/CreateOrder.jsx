@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 export default function CreateOrder() {
     const [cliente, setCliente] = useState("");
     const [produto, setProduto] = useState("");
-    const [Quantidade, setQuantidade] = useState("");
+    const [valor, setValor] = useState("");
     const navigate = useNavigate();
 
     const create = async () => {
         await api.post("/orders", {
             customer: cliente,
             product: produto,
-            quantity: Number(Quantidade) // se for número
+            price: Number(valor) // se for número
         })
 
         navigate("/");
@@ -33,8 +33,8 @@ export default function CreateOrder() {
                     onChange={e => setProduto(e.target.value)} />
 
                 <input className="border p-2 w-full"
-                    placeholder="Quantidade" value={Quantidade}
-                    onChange={e => setQuantidade(e.target.value)} />
+                    placeholder="Valor" value={valor}
+                    onChange={e => setValor(e.target.value)} />
 
                 <button className="bg-blue-600 text-white px-4 py-2 rounded"
                     onClick={create}>

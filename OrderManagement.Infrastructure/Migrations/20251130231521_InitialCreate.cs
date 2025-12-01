@@ -18,9 +18,9 @@ namespace OrderManagement.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Customer = table.Column<string>(type: "text", nullable: false),
                     Product = table.Column<string>(type: "text", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -27,7 +27,7 @@ export default function OrdersList() {
           <tr className="bg-gray-100">
             <th className="p-3">Cliente</th>
             <th className="p-3">Produto</th>
-            <th className="p-3">Quantidade</th>
+            <th className="p-3">Valor</th>
             <th className="p-3">Status</th>
             <th className="p-3"></th>
           </tr>
@@ -37,7 +37,7 @@ export default function OrdersList() {
             <tr key={o.id} className="border-b">
               <td className="p-3">{o.customer}</td>
               <td className="p-3">{o.product}</td>
-              <td className="p-3">R$ {o.quantity}</td>
+              <td className="p-3">R$ {o.price}</td>
               <td className="p-3">
                 <span className={`px-2 py-1 rounded text-white ${
                     o.status === "Pendente" ? "bg-yellow-500" :
