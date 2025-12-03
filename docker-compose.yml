@@ -1,27 +1,43 @@
-﻿
-services:
+﻿services:
   postgres:
     image: postgres:16
-    container_name: postgres
+    container_name: ${POSTGRES_CONTAINER}
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ordersdb
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     networks:
       - order-net
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ${PGADMIN_CONTAINER}
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    networks:
+      - order-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
 
   ordermanagement-api:
-    container_name: ordermanagement-api
+    container_name: ${API_CONTAINER}
     build:
       context: .
       dockerfile: OrderManagement.Api/Dockerfile
@@ -29,25 +45,25 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
-      ASPNETCORE_URLS: "http://+:8080"
-      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=ordersdb;Username=postgres;Password=postgres"
-      ServiceBus__ConnectionString: "todo"
-      ServiceBus__QueueName: "orders"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      ServiceBus__ConnectionString: ${SERVICEBUS_CONNECTION}
+      ServiceBus__QueueName: ${SERVICEBUS_QUEUE}
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "${API_PORT}:8080"
+      - "${API_DEBUG_PORT}:8081"
     restart: unless-stopped
     networks:
       - order-net
 
   orders-frontend:
-    container_name: orders-frontend
+    container_name: ${FRONT_CONTAINER}
     build:
       context: ./orders-frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${FRONT_PORT}:3000"
     networks:
       - order-net
     depends_on:
@@ -57,5 +73,7 @@ services:
 
 networks:
   order-net:
+
 volumes:
   pgdata:
+  pgadmin_data:
