@@ -1,5 +1,4 @@
-version: "3.9"
-
+﻿
 services:
   postgres:
     image: postgres:16
@@ -15,6 +14,11 @@ services:
       - order-net
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
 
   ordermanagement-api:
     container_name: ordermanagement-api
@@ -22,7 +26,8 @@ services:
       context: .
       dockerfile: OrderManagement.Api/Dockerfile
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:8080"
@@ -35,6 +40,20 @@ services:
     restart: unless-stopped
     networks:
       - order-net
+
+  orders-frontend:
+    container_name: orders-frontend
+    build:
+      context: ./orders-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - order-net
+    depends_on:
+      - ordermanagement-api
+    environment:
+      REACT_APP_API_URL: "http://ordermanagement-api:8080"
 
 networks:
   order-net:

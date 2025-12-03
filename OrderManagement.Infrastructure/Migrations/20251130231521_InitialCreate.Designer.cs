@@ -12,7 +12,7 @@ using OrderManagement.Infrastructure;
 namespace OrderManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20251130174936_InitialCreate")]
+    [Migration("20251130231521_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,15 +35,15 @@ namespace OrderManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DataCriacao")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Product")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Status")
                         .IsRequired()
